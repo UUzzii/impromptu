@@ -8,7 +8,7 @@ import lombok.Getter;
  * @date 2024/11/14 9:27
  */
 @Getter
-public enum LanguageEnum {
+public enum LanguageEnumBaiDu {
 
     yueyu("粤语", "yueyu"),
     kor("韩语", "kor"),
@@ -45,7 +45,7 @@ public enum LanguageEnum {
     /** 编号 */
     private final String code;
 
-    LanguageEnum(String name, String code) {
+    LanguageEnumBaiDu(String name, String code) {
         this.name = name;
         this.code = code;
     }
