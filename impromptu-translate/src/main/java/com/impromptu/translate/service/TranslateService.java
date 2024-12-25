@@ -21,6 +21,7 @@ public class TranslateService {
     public JSONObject translate(TranslateDTO translateDTO) {
         JSONObject result = new JSONObject();
         result.put("baidu", TranslateUtil.baidu(translateDTO));
+        result.put("youdao", TranslateUtil.youdao(translateDTO));
         return result;
     }
 }
