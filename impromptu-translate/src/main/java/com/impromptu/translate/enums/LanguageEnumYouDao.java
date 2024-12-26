@@ -1,6 +1,7 @@
 package com.impromptu.translate.enums;
 
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 语种枚举
@@ -10,23 +11,23 @@ import lombok.Getter;
 @Getter
 public enum LanguageEnumYouDao {
 
-    ar("阿拉伯语", "ar"),
-    de("德语", "de"),
-    en("英语,", "en"),
-    es("西班牙语", "es"),
-    fr("法语", "fr"),
+    ar(LanguageEnum.ara.getCode(), "阿拉伯语", "ar"),
+    de(LanguageEnum.de.getCode(), "德语", "de"),
+    en(LanguageEnum.en.getCode(), "英语,", "en"),
+    es(LanguageEnum.spa.getCode(), "西班牙语", "es"),
+    fr(LanguageEnum.fra.getCode(), "法语", "fr"),
     hi("印地语", "hi"),
     id("印度尼西亚语", "id"),
     it("意大利语", "it"),
-    ja("日语", "ja"),
-    ko("韩语", "ko"),
-    nl("荷兰语", "nl"),
+    ja(LanguageEnum.jp.getCode(), "日语", "ja"),
+    ko(LanguageEnum.ko.getCode(), "韩语", "ko"),
+    nl(LanguageEnum.nl.getCode(), "荷兰语", "nl"),
     pt("葡萄牙语", "pt"),
-    ru("俄语", "ru"),
-    th("泰语", "th"),
+    ru(LanguageEnum.ru.getCode(), "俄语", "ru"),
+    th(LanguageEnum.th.getCode(), "泰语", "th"),
     vi("越南语", "vi"),
-    zh_CHS("简体中文", "zh-CHS"),
-    zh_CHT("繁体中文", "zh-CHT"),
+    zh_CHS(LanguageEnum.zh.getCode(), "简体中文", "zh-CHS"),
+    zh_CHT(LanguageEnum.cht.getCode(), "繁体中文", "zh-CHT"),
     af("南非荷兰语", "af"),
     cs("捷克语", "cs"),
     da("丹麦语", "da"),
@@ -54,7 +55,10 @@ public enum LanguageEnumYouDao {
     tl("菲律宾语", "tl"),
     tr("土耳其语", "tr"),
     uz("乌兹别克语", "uz"),
-    yue("粤语", "yue");
+    yue(LanguageEnum.yueyu.getCode(), "粤语", "yue");
+
+    /** 来源，用于映射 */
+    private String from;
 
     /** 名称 */
     private final String name;
@@ -65,5 +69,23 @@ public enum LanguageEnumYouDao {
     LanguageEnumYouDao(String name, String code) {
         this.name = name;
         this.code = code;
+    }
+
+    LanguageEnumYouDao(String from, String name, String code) {
+        this.from = from;
+        this.name = name;
+        this.code = code;
+    }
+
+    public static String getCodeByFrom(String from) {
+        if (StringUtils.isBlank(from)) {
+            throw new RuntimeException("from为空");
+        }
+        for (LanguageEnumYouDao value : LanguageEnumYouDao.values()) {
+            if (StringUtils.isNotBlank(value.getFrom()) && value.getFrom().equals(from)) {
+                return value.getCode();
+            }
+        }
+        return from;
     }
 }

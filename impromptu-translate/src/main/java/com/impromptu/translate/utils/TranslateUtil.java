@@ -10,6 +10,8 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.Lists;
 import com.impromptu.translate.dto.TranslateDTO;
+import com.impromptu.translate.enums.LanguageEnumBaiDu;
+import com.impromptu.translate.enums.LanguageEnumYouDao;
 import com.impromptu.translate.properties.TranslateProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -45,8 +47,8 @@ public class TranslateUtil {
 
         JSONObject paramMap = new JSONObject();
         paramMap.put("q", translateDTO.getContent());
-        paramMap.put("from", StringUtils.isNotBlank(translateDTO.getFrom()) ? translateDTO.getFrom() : "auto");
-        paramMap.put("to", translateDTO.getTo());
+        paramMap.put("from", StringUtils.isNotBlank(translateDTO.getFrom()) ? LanguageEnumBaiDu.getCodeByFrom(translateDTO.getFrom()) : "auto");
+        paramMap.put("to", LanguageEnumBaiDu.getCodeByFrom(translateDTO.getTo()));
         paramMap.put("appid", baidu.getAppId());
         paramMap.put("salt", IdUtil.simpleUUID());
 
@@ -92,8 +94,8 @@ public class TranslateUtil {
 
         JSONObject paramMap = new JSONObject();
         paramMap.put("q", content);
-        paramMap.put("from", StringUtils.isNotBlank(translateDTO.getFrom()) ? translateDTO.getFrom() : "auto");
-        paramMap.put("to", translateDTO.getTo());
+        paramMap.put("from", StringUtils.isNotBlank(translateDTO.getFrom()) ? LanguageEnumYouDao.getCodeByFrom(translateDTO.getFrom()) : "auto");
+        paramMap.put("to", LanguageEnumYouDao.getCodeByFrom(translateDTO.getTo()));
 
         // 应用id
         paramMap.put("appKey", youdao.getAppId());
