@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.impromptu.outdoor.dao.UserDao">
+
+    <resultMap type="com.impromptu.outdoor.entity.User" id="UserMap">
+        <result property="id" column="id" />
+        <result property="account" column="account" />
+        <result property="password" column="password" />
+        <result property="phone" column="phone" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="avatar" column="avatar" />
+        <result property="bio" column="bio" />
+        <result property="birthday" column="birthday" />
+        <result property="age" column="age" />
+        <result property="region" column="region" />
+        <result property="status" column="status" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO outdoor_user(account, password, phone, name, sex, avatar, bio, birthday, age, region, status, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.account}, #{item.password}, #{item.phone}, #{item.name}, #{item.sex}, #{item.avatar}, #{item.bio}, #{item.birthday}, #{item.age}, #{item.region}, #{item.status}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        account = VALUES(account),
+        password = VALUES(password),
+        phone = VALUES(phone),
+        name = VALUES(name),
+        sex = VALUES(sex),
+        avatar = VALUES(avatar),
+        bio = VALUES(bio),
+        birthday = VALUES(birthday),
+        age = VALUES(age),
+        region = VALUES(region),
+        status = VALUES(status),
+        create_time = VALUES(create_time),
+        update_time = VALUES(update_time)
+    </insert>
+
+</mapper>
+

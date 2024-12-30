@@ -11,6 +11,7 @@
     <modules>
         <module>impromptu-common</module>
         <module>impromptu-translate</module>
+        <module>impromptu-outdoor</module>
     </modules>
 
     <properties>
