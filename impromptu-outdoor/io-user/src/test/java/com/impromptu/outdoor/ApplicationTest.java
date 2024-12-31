@@ -1,6 +1,8 @@
 package com.impromptu.outdoor;
 
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.AES;
+import com.google.common.collect.Lists;
 import com.impromptu.outdoor.dao.UserDao;
 import com.impromptu.outdoor.entity.User;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,35 @@ public class ApplicationTest {
 
     @Autowired
     private UserDao userDao;
+
+    public static void main(String[] args) {
+        String data = "15111685573";
+        List<String> list = substringLength(data, 4);
+        System.out.println(list);
+
+        AES aes = new AES("0123456789abcdef".getBytes());
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(aes.encryptHex(s));
+        }
+        System.out.println(sb.length());
+        System.out.println(sb);
+    }
+
+    private static List<String> substringLength(String data, int length) {
+        List<String> list = Lists.newArrayList();
+
+        char[] charArray = data.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (i + length > charArray.length) {
+                break;
+            }
+            list.add(data.substring(i, i + length));
+        }
+
+        return list;
+    }
 
     @Test
     void a() {

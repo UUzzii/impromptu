@@ -72,5 +72,10 @@ public class User extends BaseEntity implements Serializable {
      * 地区，关联表查询
      */
     private Integer region;
+
+    /**
+     * 加密后的手机号
+     */
+    private String phoneEncrypt;
 }
 

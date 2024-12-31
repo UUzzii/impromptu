@@ -19,5 +19,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResultVO<?> registerOrLogin(LoginDTO loginDTO);
+
+    /**
+     * 分页查询
+     * @param user
+     * @return
+     */
+    ResultVO<?> list(User user);
 }
 

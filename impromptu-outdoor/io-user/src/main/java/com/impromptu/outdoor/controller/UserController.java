@@ -1,6 +1,7 @@
 package com.impromptu.outdoor.controller;
 
 import com.common.result.ResultVO;
+import com.impromptu.outdoor.entity.User;
 import com.impromptu.outdoor.entity.dto.LoginDTO;
 import com.impromptu.outdoor.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,16 @@ public class UserController {
     @PostMapping("/registerOrLogin")
     public ResultVO<?> registerOrLogin(@Valid @RequestBody LoginDTO loginDTO) {
         return userService.registerOrLogin(loginDTO);
+    }
+
+    /**
+     * 分页查询
+     * @param user
+     * @return
+     */
+    @PostMapping("/list")
+    public ResultVO<?> list(@RequestBody User user) {
+        return userService.list(user);
     }
 }
 
