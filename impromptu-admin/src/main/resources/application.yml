@@ -1,0 +1,27 @@
+# 端口
+server:
+  port: 9030
+
+spring:
+  application:
+    # 应用名称
+    name: impromptu-admin
+  # 数据库配置
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://139.199.230.186:3306/impromptu
+    username: root
+    password: shipeng@98
+
+mybatis-plus:
+  configuration:
+    # 驼峰命名
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 主键类型
+      id-type: auto
+      # 表前缀
+      table-prefix: mb_
+  # 别名包扫描路径
+  type-aliases-package: com.impromptu.admin.entity
