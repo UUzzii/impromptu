@@ -2,6 +2,7 @@ package com.impromptu.admin.controller;
 
 import com.common.result.ResultVO;
 import com.impromptu.admin.dto.AdminUserDTO;
+import com.impromptu.admin.dto.AdminUserSelectDTO;
 import com.impromptu.admin.service.AdminUserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,9 +30,19 @@ public class AdminUserController {
      * @param dto
      * @return
      */
-    @PostMapping()
+    @PostMapping("/add")
     public ResultVO<?> add(@RequestBody AdminUserDTO dto) {
         return adminUserService.add(dto);
+    }
+
+    /**
+     * 分页查询
+     * @param dto
+     * @return
+     */
+    @PostMapping("/page")
+    public ResultVO<?> page(@RequestBody AdminUserSelectDTO dto) {
+        return adminUserService.page(dto);
     }
 }
 

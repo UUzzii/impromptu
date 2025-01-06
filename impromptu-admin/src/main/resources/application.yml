@@ -12,6 +12,9 @@ spring:
     url: jdbc:p6spy:mysql://139.199.230.186:3306/impromptu
     username: root
     password: shipeng@98
+  # 全局日期格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 mybatis-plus:
   configuration:

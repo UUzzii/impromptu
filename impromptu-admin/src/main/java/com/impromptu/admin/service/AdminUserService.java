@@ -3,6 +3,7 @@ package com.impromptu.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.common.result.ResultVO;
 import com.impromptu.admin.dto.AdminUserDTO;
+import com.impromptu.admin.dto.AdminUserSelectDTO;
 import com.impromptu.admin.entity.AdminUser;
 
 /**
@@ -19,5 +20,12 @@ public interface AdminUserService extends IService<AdminUser> {
      * @return
      */
     ResultVO<?> add(AdminUserDTO dto);
+
+    /**
+     * 分页查询
+     * @param dto
+     * @return
+     */
+    ResultVO<?> page(AdminUserSelectDTO dto);
 }
 

@@ -2,13 +2,18 @@ package com.impromptu.admin.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.entity.BaseEntity;
 import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.impromptu.admin.dao.AdminUserDao;
 import com.impromptu.admin.dto.AdminUserDTO;
+import com.impromptu.admin.dto.AdminUserSelectDTO;
 import com.impromptu.admin.entity.AdminUser;
 import com.impromptu.admin.service.AdminUserService;
+import com.impromptu.admin.utils.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -47,6 +52,20 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
 
         baseMapper.insert(adminUser);
         return ResultUtil.success();
+    }
+
+    @Override
+    public ResultVO<?> page(AdminUserSelectDTO dto) {
+        LambdaQueryWrapper<AdminUser> wrapper = Wrappers.<AdminUser>lambdaQuery()
+                .eq(StringUtils.isNotBlank(dto.getAccount()), AdminUser::getAccount, dto.getAccount())
+                .like(StringUtils.isNotBlank(dto.getName()), AdminUser::getName, dto.getName())
+                .eq(StringUtils.isNotBlank(dto.getPhone()), AdminUser::getPhone, dto.getPhone())
+                .eq(dto.getSex() != null, AdminUser::getSex, dto.getSex())
+                .eq(dto.getStatus() != null, AdminUser::getStatus, dto.getStatus())
+                .ge(dto.getCreateTimeStart() != null, AdminUser::getCreateTime, dto.getCreateTimeStart())
+                .le(dto.getCreateTimeEnd() != null, AdminUser::getCreateTime, dto.getCreateTimeEnd())
+                .orderByDesc(BaseEntity::getCreateTime);
+        return ResultUtil.success(baseMapper.selectPage(PageUtil.page(dto), wrapper));
     }
 }
 
