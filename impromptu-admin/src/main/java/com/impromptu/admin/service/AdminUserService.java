@@ -34,5 +34,12 @@ public interface AdminUserService extends IService<AdminUser> {
      * @return
      */
     ResultVO<?> update(AdminUserDTO dto);
+
+    /**
+     * 删除
+     * @param dto
+     * @return
+     */
+    ResultVO<?> delete(AdminUserDTO dto);
 }
 

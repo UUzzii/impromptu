@@ -53,6 +53,14 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
      * @return
      */
     private AdminUser pre(AdminUserDTO dto) {
+        boolean exists = baseMapper.exists(Wrappers.lambdaQuery(AdminUser.class)
+                .eq(AdminUser::getAccount, dto.getAccount())
+                .eq(BaseEntity::getStatus, 1)
+                .ne(dto.getId() != null, AdminUser::getId, dto.getId()));
+        if (exists) {
+            throw new BusinessException(ResultEnum.ERROR, "账号已存在");
+        }
+
         if (!Validator.isMobile(dto.getPhone())) {
             throw new BusinessException(ResultEnum.ERROR, "手机号格式不正确");
         }
@@ -87,6 +95,16 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
 
         baseMapper.updateById(adminUser);
 
+        return ResultUtil.success();
+    }
+
+    @Override
+    public ResultVO<?> delete(AdminUserDTO dto) {
+        AdminUser adminUser = new AdminUser();
+        adminUser.setId(dto.getId());
+        adminUser.setStatus(0);
+        adminUser.setUpdateTime(new Date());
+        baseMapper.updateById(adminUser);
         return ResultUtil.success();
     }
 }

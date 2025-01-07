@@ -54,5 +54,15 @@ public class AdminUserController {
     public ResultVO<?> update(@RequestBody AdminUserDTO dto) {
         return adminUserService.update(dto);
     }
+
+    /**
+     * 删除
+     * @param dto
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVO<?> delete(@RequestBody AdminUserDTO dto) {
+        return adminUserService.delete(dto);
+    }
 }
 
