@@ -12,6 +12,12 @@ spring:
     url: jdbc:p6spy:mysql://139.199.230.186:3306/impromptu
     username: root
     password: shipeng@98
+  # redis配置
+  redis:
+    host: 139.199.230.186
+    port: 6379
+    password: redis980520
+    timeout: 10000
   # 全局日期格式化
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
