@@ -27,5 +27,12 @@ public interface AdminUserService extends IService<AdminUser> {
      * @return
      */
     ResultVO<?> page(AdminUserSelectDTO dto);
+
+    /**
+     * 修改
+     * @param dto
+     * @return
+     */
+    ResultVO<?> update(AdminUserDTO dto);
 }
 

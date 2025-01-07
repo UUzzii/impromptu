@@ -1,5 +1,6 @@
 package com.common.result;
 
+import com.common.enums.ResultEnum;
 import lombok.Data;
 
 /**
@@ -15,4 +16,14 @@ public class ResultVO<T> {
     private String msg;
 
     private T data;
+
+    public ResultVO(ResultEnum resultEnum) {
+        this.code = resultEnum.getCode();
+        this.msg = resultEnum.getMessage();
+    }
+
+    public ResultVO(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
 }

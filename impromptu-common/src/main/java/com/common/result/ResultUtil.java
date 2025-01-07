@@ -1,5 +1,7 @@
 package com.common.result;
 
+import com.common.enums.ResultEnum;
+
 /**
  * 返回工具类
  * @author 石鹏
@@ -7,13 +9,8 @@ package com.common.result;
  */
 public class ResultUtil {
 
-    private static final Integer SUCCESS_CODE = 200;
-    private static final Integer ERROR_CODE = 500;
-
     public static <T> ResultVO<T> success(T data) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(SUCCESS_CODE);
-        resultVO.setMsg("success");
+        ResultVO<T> resultVO = new ResultVO<>(ResultEnum.SUCCESS);
         resultVO.setData(data);
         return resultVO;
     }
@@ -22,14 +19,11 @@ public class ResultUtil {
         return success(null);
     }
 
-    public static <T> ResultVO<T> error(Integer code, String msg) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(code);
-        resultVO.setMsg(msg);
-        return resultVO;
+    public static <T> ResultVO<T> error(String msg) {
+        return new ResultVO<>(ResultEnum.ERROR.getCode(), msg);
     }
 
-    public static <T> ResultVO<T> error(String msg) {
-        return error(ERROR_CODE, msg);
+    public static <T> ResultVO<T> result(Integer code, String msg) {
+        return new ResultVO<>(code, msg);
     }
 }

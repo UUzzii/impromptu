@@ -44,5 +44,15 @@ public class AdminUserController {
     public ResultVO<?> page(@RequestBody AdminUserSelectDTO dto) {
         return adminUserService.page(dto);
     }
+
+    /**
+     * 修改
+     * @param dto
+     * @return
+     */
+    @PostMapping("/update")
+    public ResultVO<?> update(@RequestBody AdminUserDTO dto) {
+        return adminUserService.update(dto);
+    }
 }
 

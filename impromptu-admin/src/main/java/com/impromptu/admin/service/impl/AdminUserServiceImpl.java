@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.entity.BaseEntity;
+import com.common.enums.ResultEnum;
+import com.common.exception.BusinessException;
 import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.impromptu.admin.dao.AdminUserDao;
@@ -31,16 +33,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
 
     @Override
     public ResultVO<?> add(AdminUserDTO dto) {
-        if (!Validator.isMobile(dto.getPhone())) {
-            return ResultUtil.error("手机号格式不正确");
-        }
-        // 密码md5加密
-        dto.setPassword(SecureUtil.md5(dto.getPassword()));
-
-        // 转换dto为entity
-        AdminUser adminUser = new AdminUser();
-        BeanUtils.copyProperties(dto, adminUser);
-
+        AdminUser adminUser = this.pre(dto);
         adminUser.setStatus(1);
         adminUser.setCreateTime(new Date());
         adminUser.setUpdateTime(adminUser.getCreateTime());
@@ -52,6 +45,25 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
 
         baseMapper.insert(adminUser);
         return ResultUtil.success();
+    }
+
+    /**
+     * 前置工作
+     * @param dto
+     * @return
+     */
+    private AdminUser pre(AdminUserDTO dto) {
+        if (!Validator.isMobile(dto.getPhone())) {
+            throw new BusinessException(ResultEnum.ERROR, "手机号格式不正确");
+        }
+        // 密码md5加密
+        dto.setPassword(SecureUtil.md5(dto.getPassword()));
+
+        // 转换dto为entity
+        AdminUser adminUser = new AdminUser();
+        BeanUtils.copyProperties(dto, adminUser);
+
+        return adminUser;
     }
 
     @Override
@@ -66,6 +78,16 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
                 .le(dto.getCreateTimeEnd() != null, AdminUser::getCreateTime, dto.getCreateTimeEnd())
                 .orderByDesc(BaseEntity::getCreateTime);
         return ResultUtil.success(baseMapper.selectPage(PageUtil.page(dto), wrapper));
+    }
+
+    @Override
+    public ResultVO<?> update(AdminUserDTO dto) {
+        AdminUser adminUser = this.pre(dto);
+        adminUser.setUpdateTime(new Date());
+
+        baseMapper.updateById(adminUser);
+
+        return ResultUtil.success();
     }
 }
 
