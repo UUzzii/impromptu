@@ -8,6 +8,7 @@ import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.impromptu.admin.dto.LoginDTO;
 import com.impromptu.admin.entity.AdminUser;
+import com.impromptu.admin.utils.AuthUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,7 +53,7 @@ public class AuthService {
         // 生成token
         String token = IdUtil.simpleUUID();
         // 缓存token
-        redisTemplate.opsForValue().set("token:" + token, adminUser);
+        redisTemplate.opsForValue().set(AuthUtil.tokenKey(token), adminUser);
 
         return ResultUtil.success(token);
     }

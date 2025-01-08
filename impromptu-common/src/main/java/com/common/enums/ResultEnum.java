@@ -11,6 +11,7 @@ import lombok.Getter;
 public enum ResultEnum {
 
     SUCCESS(200, "操作成功"),
+    NO_LOGIN(400, "未登录"),
     ERROR(500, "系统内部错误，请稍后重试");
 
     private final Integer code;
