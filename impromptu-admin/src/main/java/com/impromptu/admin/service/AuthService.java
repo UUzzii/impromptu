@@ -15,6 +15,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author 石鹏
  * @date 2025/1/7 11:41
@@ -56,5 +58,18 @@ public class AuthService {
         redisTemplate.opsForValue().set(AuthUtil.tokenKey(token), adminUser);
 
         return ResultUtil.success(token);
+    }
+
+    /**
+     * 注销
+     * @param request
+     * @return
+     */
+    public ResultVO<?> logout(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (StringUtils.isNotBlank(token)) {
+            redisTemplate.delete(AuthUtil.tokenKey(token));
+        }
+        return ResultUtil.success();
     }
 }

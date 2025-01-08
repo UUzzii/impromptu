@@ -4,10 +4,13 @@ import com.common.result.ResultVO;
 import com.impromptu.admin.dto.LoginDTO;
 import com.impromptu.admin.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 石鹏
@@ -29,5 +32,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResultVO<?> login(@RequestBody LoginDTO dto) {
         return authService.login(dto);
+    }
+
+    /**
+     * 注销
+     * @return
+     */
+    @GetMapping("/logout")
+    public ResultVO<?> logout(HttpServletRequest request) {
+        return authService.logout(request);
     }
 }
