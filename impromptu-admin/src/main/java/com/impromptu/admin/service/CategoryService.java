@@ -33,5 +33,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResultVO<?> update(Category category);
+
+    /**
+     * 删除
+     * @param category
+     * @return
+     */
+    ResultVO<?> delete(Category category);
 }
 

@@ -54,5 +54,15 @@ public class CategoryController {
     public ResultVO<?> update(@RequestBody Category category) {
         return categoryService.update(category);
     }
+
+    /**
+     * 删除
+     * @param category
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResultVO<?> delete(@RequestBody Category category) {
+        return categoryService.delete(category);
+    }
 }
 

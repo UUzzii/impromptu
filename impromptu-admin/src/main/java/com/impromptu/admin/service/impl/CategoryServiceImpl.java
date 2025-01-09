@@ -102,5 +102,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
 
         return ResultVO.success();
     }
+
+    @Override
+    public ResultVO<?> delete(Category category) {
+        Category old = baseMapper.selectById(category.getId());
+        if (old == null) {
+            return ResultVO.error("分类不存在");
+        }
+
+        // 查询是否有子分类
+        boolean exists = baseMapper.exists(Wrappers.lambdaQuery(Category.class)
+                .eq(Category::getParentId, category.getId()));
+        if (exists) {
+            return ResultVO.error("该分类下有子分类，无法删除");
+        }
+
+        baseMapper.deleteById(category.getId());
+
+        return ResultVO.success();
+    }
 }
 
