@@ -15,6 +15,7 @@ import com.impromptu.admin.service.CategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
             treeNodeList.add(treeNode);
         });
         return ResultVO.success(TreeUtil.build(treeNodeList, 0));
+    }
+
+    @Override
+    public ResultVO<?> add(Category category) {
+        if (category.getParentId() == null) {
+            category.setParentId(0);
+        } else {
+            Category parent = baseMapper.selectById(category.getParentId());
+            if (parent == null) {
+                return ResultVO.error("父级分类不存在");
+            }
+        }
+
+        // 查询名称是否重复
+        boolean exists = baseMapper.exists(Wrappers.lambdaQuery(Category.class)
+                .eq(Category::getParentId, category.getParentId())
+                .eq(Category::getName, category.getName()));
+        if (exists) {
+            return ResultVO.error("分类名称已存在");
+        }
+
+        category.setCreateTime(new Date());
+        category.setUpdateTime(category.getCreateTime());
+        baseMapper.insert(category);
+
+        return ResultVO.success();
     }
 }
 

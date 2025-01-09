@@ -2,6 +2,7 @@ package com.impromptu.admin.controller;
 
 import com.common.result.ResultVO;
 import com.impromptu.admin.dto.CategorySelectDTO;
+import com.impromptu.admin.entity.Category;
 import com.impromptu.admin.service.CategoryService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,16 @@ public class CategoryController {
     @PostMapping("/tree")
     public ResultVO<?> tree(@RequestBody CategorySelectDTO dto) {
         return categoryService.tree(dto);
+    }
+
+    /**
+     * 新增
+     * @param category
+     * @return
+     */
+    @PostMapping("/add")
+    public ResultVO<?> add(@RequestBody Category category) {
+        return categoryService.add(category);
     }
 }
 

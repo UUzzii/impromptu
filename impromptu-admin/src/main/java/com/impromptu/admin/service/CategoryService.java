@@ -19,5 +19,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResultVO<?> tree(CategorySelectDTO dto);
+
+    /**
+     * 新增
+     * @param category
+     * @return
+     */
+    ResultVO<?> add(Category category);
 }
 
