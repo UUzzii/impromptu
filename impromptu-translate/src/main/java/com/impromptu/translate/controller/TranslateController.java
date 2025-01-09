@@ -1,6 +1,5 @@
 package com.impromptu.translate.controller;
 
-import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.impromptu.translate.dto.TranslateDTO;
 import com.impromptu.translate.enums.LanguageEnum;
@@ -31,7 +30,7 @@ public class TranslateController {
      */
     @GetMapping("/languageList")
     public ResultVO<?> languageList() {
-        return ResultUtil.success(LanguageEnum.toList());
+        return ResultVO.success(LanguageEnum.toList());
     }
 
     /**
@@ -41,7 +40,7 @@ public class TranslateController {
      */
     @PostMapping()
     public ResultVO<?> translate(@RequestBody TranslateDTO translateDTO) {
-        return ResultUtil.success(translateService.translate(translateDTO));
+        return ResultVO.success(translateService.translate(translateDTO));
     }
 
     public static void main(String[] args) {

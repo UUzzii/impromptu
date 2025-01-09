@@ -1,6 +1,5 @@
 package com.impromptu.outdoor.handler;
 
-import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,6 +24,6 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
-        return ResultUtil.error(String.join(", ", errors));
+        return ResultVO.error(String.join(", ", errors));
     }
 }

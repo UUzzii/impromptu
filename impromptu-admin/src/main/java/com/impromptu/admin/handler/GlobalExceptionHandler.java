@@ -2,7 +2,6 @@ package com.impromptu.admin.handler;
 
 import com.common.enums.ResultEnum;
 import com.common.exception.BusinessException;
-import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResultVO<Void> handleBusinessException(BusinessException e) {
         log.error("业务异常", e);
-        return ResultUtil.result(e.getCode(), e.getMessage());
+        return ResultVO.result(e.getCode(), e.getMessage());
     }
 
     /**
@@ -32,6 +31,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultVO<Void> handleException(Exception e) {
         log.error("系统异常", e);
-        return ResultUtil.result(ResultEnum.ERROR.getCode(), ResultEnum.ERROR.getMessage());
+        return ResultVO.result(ResultEnum.ERROR.getCode(), ResultEnum.ERROR.getMessage());
     }
 }

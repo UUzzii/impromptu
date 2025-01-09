@@ -50,5 +50,8 @@ public class AdminUser extends BaseEntity {
      * 头像
      */
     private String avatar;
+
+    /** 状态，0正常，1删除 */
+    private Integer status;
 }
 

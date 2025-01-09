@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.entity.BaseEntity;
 import com.common.enums.ResultEnum;
 import com.common.exception.BusinessException;
-import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.impromptu.admin.dao.AdminUserDao;
 import com.impromptu.admin.dto.AdminUserDTO;
@@ -44,7 +43,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
         }
 
         baseMapper.insert(adminUser);
-        return ResultUtil.success();
+        return ResultVO.success();
     }
 
     /**
@@ -55,7 +54,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
     private AdminUser pre(AdminUserDTO dto) {
         boolean exists = baseMapper.exists(Wrappers.lambdaQuery(AdminUser.class)
                 .eq(AdminUser::getAccount, dto.getAccount())
-                .eq(BaseEntity::getStatus, 1)
+                .eq(AdminUser::getStatus, 1)
                 .ne(dto.getId() != null, AdminUser::getId, dto.getId()));
         if (exists) {
             throw new BusinessException(ResultEnum.ERROR, "账号已存在");
@@ -85,7 +84,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
                 .ge(dto.getCreateTimeStart() != null, AdminUser::getCreateTime, dto.getCreateTimeStart())
                 .le(dto.getCreateTimeEnd() != null, AdminUser::getCreateTime, dto.getCreateTimeEnd())
                 .orderByDesc(BaseEntity::getCreateTime);
-        return ResultUtil.success(baseMapper.selectPage(PageUtil.page(dto), wrapper));
+        return ResultVO.success(baseMapper.selectPage(PageUtil.page(dto), wrapper));
     }
 
     @Override
@@ -95,7 +94,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
 
         baseMapper.updateById(adminUser);
 
-        return ResultUtil.success();
+        return ResultVO.success();
     }
 
     @Override
@@ -105,7 +104,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
         adminUser.setStatus(0);
         adminUser.setUpdateTime(new Date());
         baseMapper.updateById(adminUser);
-        return ResultUtil.success();
+        return ResultVO.success();
     }
 }
 

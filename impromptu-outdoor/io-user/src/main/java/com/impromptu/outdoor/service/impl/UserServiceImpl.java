@@ -7,7 +7,6 @@ import cn.hutool.crypto.symmetric.AES;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.common.result.ResultUtil;
 import com.common.result.ResultVO;
 import com.google.common.collect.Lists;
 import com.impromptu.outdoor.dao.UserDao;
@@ -41,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public ResultVO<?> registerOrLogin(LoginDTO loginDTO) {
         if (!Validator.isMobile(loginDTO.getPhone())) {
-            return ResultUtil.error("手机号格式错误");
+            return ResultVO.error("手机号格式错误");
         }
 
         boolean flag = false;
@@ -50,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             flag = true;
         }
         if (!flag) {
-            return ResultUtil.error("验证码错误");
+            return ResultVO.error("验证码错误");
         }
 
         // 查询是否注册了
@@ -74,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         String token = IdUtil.simpleUUID();
 //        redisTemplate.opsForValue().set(token, user, 7 * 24, TimeUnit.HOURS);
 
-        return ResultUtil.success(token);
+        return ResultVO.success(token);
     }
 
     private String phoneEncrypt(String phone) {
@@ -111,7 +110,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             lambdaQueryWrapper.and(i -> i.like(User::getPhone, encryptHex).or().like(User::getPhoneEncrypt, encryptHex));
         }
         List<User> userList = baseMapper.selectList(lambdaQueryWrapper);
-        return ResultUtil.success(userList);
+        return ResultVO.success(userList);
     }
 }
 
