@@ -26,5 +26,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     ResultVO<?> add(Category category);
+
+    /**
+     * 修改
+     * @param category
+     * @return
+     */
+    ResultVO<?> update(Category category);
 }
 

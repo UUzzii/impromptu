@@ -44,5 +44,15 @@ public class CategoryController {
     public ResultVO<?> add(@RequestBody Category category) {
         return categoryService.add(category);
     }
+
+    /**
+     * 修改
+     * @param category
+     * @return
+     */
+    @PostMapping("/update")
+    public ResultVO<?> update(@RequestBody Category category) {
+        return categoryService.update(category);
+    }
 }
 

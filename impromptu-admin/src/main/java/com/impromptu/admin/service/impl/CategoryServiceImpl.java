@@ -5,6 +5,8 @@ import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.enums.ResultEnum;
+import com.common.exception.BusinessException;
 import com.common.result.ResultVO;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -56,26 +58,47 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
 
     @Override
     public ResultVO<?> add(Category category) {
+        this.check(category);
+
+        category.setCreateTime(new Date());
+        category.setUpdateTime(category.getCreateTime());
+        baseMapper.insert(category);
+
+        return ResultVO.success();
+    }
+
+    private void check(Category category) {
         if (category.getParentId() == null) {
             category.setParentId(0);
-        } else {
+        } else if (category.getParentId() != 0) {
             Category parent = baseMapper.selectById(category.getParentId());
             if (parent == null) {
-                return ResultVO.error("父级分类不存在");
+                throw new BusinessException(ResultEnum.ERROR, "父级分类不存在");
             }
         }
 
         // 查询名称是否重复
         boolean exists = baseMapper.exists(Wrappers.lambdaQuery(Category.class)
                 .eq(Category::getParentId, category.getParentId())
-                .eq(Category::getName, category.getName()));
+                .eq(Category::getName, category.getName())
+                .ne(category.getId() != null, Category::getId, category.getId()));
         if (exists) {
-            return ResultVO.error("分类名称已存在");
+            throw new BusinessException(ResultEnum.ERROR, "分类名称已存在");
+        }
+    }
+
+    @Override
+    public ResultVO<?> update(Category category) {
+        Category old = baseMapper.selectById(category.getId());
+        if (old == null) {
+            return ResultVO.error("分类不存在");
         }
 
-        category.setCreateTime(new Date());
-        category.setUpdateTime(category.getCreateTime());
-        baseMapper.insert(category);
+        // 校验
+        this.check(category);
+
+        category.setUpdateTime(new Date());
+        baseMapper.updateById(category);
 
         return ResultVO.success();
     }
