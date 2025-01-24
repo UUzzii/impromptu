@@ -4,6 +4,7 @@ import com.common.result.ResultVO;
 import com.impromptu.admin.dto.AdminUserDTO;
 import com.impromptu.admin.dto.AdminUserSelectDTO;
 import com.impromptu.admin.service.AdminUserService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,15 @@ public class AdminUserController {
     @Resource
     private AdminUserService adminUserService;
 
+
+    /**
+     * 获取当前用户信息
+     * @return
+     */
+    @GetMapping("/getCurrent")
+    public ResultVO<?> getCurrent() {
+        return adminUserService.getCurrent();
+    }
 
     /**
      * 新增

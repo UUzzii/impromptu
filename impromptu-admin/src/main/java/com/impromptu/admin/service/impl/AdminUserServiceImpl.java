@@ -14,6 +14,7 @@ import com.impromptu.admin.dto.AdminUserDTO;
 import com.impromptu.admin.dto.AdminUserSelectDTO;
 import com.impromptu.admin.entity.AdminUser;
 import com.impromptu.admin.service.AdminUserService;
+import com.impromptu.admin.utils.AuthUtil;
 import com.impromptu.admin.utils.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -105,6 +106,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
         adminUser.setUpdateTime(new Date());
         baseMapper.updateById(adminUser);
         return ResultVO.success();
+    }
+
+    @Override
+    public ResultVO<?> getCurrent() {
+        return ResultVO.success(AuthUtil.get());
     }
 }
 

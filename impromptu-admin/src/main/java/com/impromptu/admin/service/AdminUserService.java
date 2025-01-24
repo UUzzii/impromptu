@@ -41,5 +41,11 @@ public interface AdminUserService extends IService<AdminUser> {
      * @return
      */
     ResultVO<?> delete(AdminUserDTO dto);
+
+    /**
+     * 获取当前用户信息
+     * @return
+     */
+    ResultVO<?> getCurrent();
 }
 
