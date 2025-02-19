@@ -27,8 +27,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 放行OPTIONS请求
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
+
         // 从请求头中获取token
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         if (StringUtils.isBlank(token)) {
             throw new BusinessException(ResultEnum.NO_LOGIN);
         }

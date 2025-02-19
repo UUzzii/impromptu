@@ -19,10 +19,11 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 允许跨域的路径
-                        .allowedOriginPatterns("*") // 允许跨域的来源（前端地址）
+                        .allowedOriginPatterns("http://localhost:5173") // 允许跨域的来源（前端地址）
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的请求方法
                         .allowedHeaders("*") // 允许的请求头
-                        .allowCredentials(true); // 允许发送 Cookie
+                        .exposedHeaders("*")  // 允许客户端访问的响应头
+                        .allowCredentials(true); // 允许携带认证信息
             }
         };
     }
