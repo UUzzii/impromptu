@@ -23,7 +23,7 @@ public class MybatisPlusConfig {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         // 处理 discard long time none received connection
         System.setProperty("druid.mysql.usePingMethod", "false");
     }

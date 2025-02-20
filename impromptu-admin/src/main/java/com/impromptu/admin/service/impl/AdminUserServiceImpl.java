@@ -3,12 +3,15 @@ package com.impromptu.admin.service.impl;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.entity.BaseEntity;
+import com.common.enums.DictEnum;
 import com.common.enums.ResultEnum;
 import com.common.exception.BusinessException;
 import com.common.result.ResultVO;
+import com.common.utils.DictUtil;
 import com.impromptu.admin.dao.AdminUserDao;
 import com.impromptu.admin.dto.AdminUserDTO;
 import com.impromptu.admin.dto.AdminUserSelectDTO;
@@ -16,6 +19,7 @@ import com.impromptu.admin.entity.AdminUser;
 import com.impromptu.admin.service.AdminUserService;
 import com.impromptu.admin.utils.AuthUtil;
 import com.impromptu.admin.utils.PageUtil;
+import com.impromptu.admin.vo.AdminUserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -85,7 +89,15 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
                 .ge(dto.getCreateTimeStart() != null, AdminUser::getCreateTime, dto.getCreateTimeStart())
                 .le(dto.getCreateTimeEnd() != null, AdminUser::getCreateTime, dto.getCreateTimeEnd())
                 .orderByDesc(BaseEntity::getCreateTime);
-        return ResultVO.success(baseMapper.selectPage(PageUtil.page(dto), wrapper));
+        IPage<AdminUser> adminUserIPage = baseMapper.selectPage(PageUtil.page(dto), wrapper);
+        // 转换VO
+        return ResultVO.success(adminUserIPage.convert(record -> {
+            AdminUserVO adminUserVO = new AdminUserVO();
+            BeanUtils.copyProperties(record, adminUserVO);
+            adminUserVO.setSexText(DictUtil.getValue(DictEnum.ADMIN_USER_SEX, record.getSex()));
+            adminUserVO.setStatusText(DictUtil.getValue(DictEnum.ADMIN_USER_STATUS, record.getStatus()));
+            return adminUserVO;
+        }));
     }
 
     @Override

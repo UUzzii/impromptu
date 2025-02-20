@@ -18,9 +18,9 @@ public class RedisTask {
 
 
     /**
-     * 定时检查Redis连接，每隔30s检查一次
+     * 定时检查Redis连接
      */
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 50000)
     public void validateConnection() {
         LettuceConnectionFactory lettuceConnectionFactory = (LettuceConnectionFactory) redisConnectionFactory;
         lettuceConnectionFactory.validateConnection();
