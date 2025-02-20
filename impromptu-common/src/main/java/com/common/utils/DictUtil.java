@@ -17,10 +17,19 @@ import java.util.List;
  */
 public class DictUtil {
 
+    /** 所属系统：admin */
+    public static final String FROM_SYSTEM_ADMIN = "admin";
+
     private static final RedisTemplate<String, Object> redisTemplate = SpringUtil.getBean("redisTemplate");
 
+    /**
+     * 生成key
+     * @param fromSystem
+     * @param code
+     * @return
+     */
     public static String key(String fromSystem, String code) {
-        return fromSystem + ":" + code;
+        return "dict:" + fromSystem + ":" + code;
     }
 
     /**

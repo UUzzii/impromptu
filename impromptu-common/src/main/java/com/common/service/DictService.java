@@ -1,5 +1,7 @@
 package com.common.service;
 
+import com.common.result.ResultVO;
+
 /**
  * 字典表(Dict)表服务接口
  *
@@ -8,5 +10,10 @@ package com.common.service;
  */
 public interface DictService {
 
+    /**
+     * 获取所有字典
+     * @return
+     */
+    ResultVO<?> all();
 }
 

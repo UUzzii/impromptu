@@ -1,5 +1,6 @@
 package com.common.enums;
 
+import com.common.utils.DictUtil;
 import lombok.Getter;
 
 /**
@@ -9,8 +10,8 @@ import lombok.Getter;
 @Getter
 public enum DictEnum {
 
-    ADMIN_USER_STATUS("admin_user_status", "admin", "用户的状态"),
-    ADMIN_USER_SEX("admin_user_sex", "admin", "用户的性别"),
+    ADMIN_USER_STATUS("admin_user_status", DictUtil.FROM_SYSTEM_ADMIN, "用户的状态"),
+    ADMIN_USER_SEX("admin_user_sex", DictUtil.FROM_SYSTEM_ADMIN, "用户的性别"),
     ;
 
     private final String code;
