@@ -86,8 +86,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
                 .eq(StringUtils.isNotBlank(dto.getPhone()), AdminUser::getPhone, dto.getPhone())
                 .eq(dto.getSex() != null, AdminUser::getSex, dto.getSex())
                 .eq(dto.getStatus() != null, AdminUser::getStatus, dto.getStatus())
-                .ge(dto.getCreateTimeStart() != null, AdminUser::getCreateTime, dto.getCreateTimeStart())
-                .le(dto.getCreateTimeEnd() != null, AdminUser::getCreateTime, dto.getCreateTimeEnd())
+                .ge(StringUtils.isNotBlank(dto.getCreateTimeStart()), AdminUser::getCreateTime, dto.getCreateTimeStart())
+                .le(StringUtils.isNotBlank(dto.getCreateTimeEnd()), AdminUser::getCreateTime, dto.getCreateTimeEnd())
                 .orderByDesc(BaseEntity::getCreateTime);
         IPage<AdminUser> adminUserIPage = baseMapper.selectPage(PageUtil.page(dto), wrapper);
         // 转换VO

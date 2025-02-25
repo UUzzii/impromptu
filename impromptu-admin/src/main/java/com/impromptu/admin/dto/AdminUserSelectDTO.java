@@ -4,8 +4,6 @@ import com.common.dto.PageDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
 /**
  * 后台用户表(AdminUser)查询DTO
  * @author 石鹏
@@ -39,8 +37,8 @@ public class AdminUserSelectDTO extends PageDTO {
     private Integer status;
 
     /** 创建时间-开始 */
-    private Date createTimeStart;
+    private String createTimeStart;
 
     /** 创建时间-结束 */
-    private Date createTimeEnd;
+    private String createTimeEnd;
 }
