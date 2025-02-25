@@ -12,6 +12,7 @@ import com.common.enums.ResultEnum;
 import com.common.exception.BusinessException;
 import com.common.result.ResultVO;
 import com.common.utils.DictUtil;
+import com.common.utils.MinioUtil;
 import com.impromptu.admin.dao.AdminUserDao;
 import com.impromptu.admin.dto.AdminUserDTO;
 import com.impromptu.admin.dto.AdminUserSelectDTO;
@@ -22,6 +23,7 @@ import com.impromptu.admin.utils.PageUtil;
 import com.impromptu.admin.vo.AdminUserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,6 +36,10 @@ import java.util.Date;
  */
 @Service
 public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> implements AdminUserService {
+
+    @Autowired
+    private MinioUtil minioUtil;
+
 
     @Override
     public ResultVO<?> add(AdminUserDTO dto) {
@@ -96,6 +102,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserDao, AdminUser> i
             BeanUtils.copyProperties(record, adminUserVO);
             adminUserVO.setSexText(DictUtil.getValue(DictEnum.ADMIN_USER_SEX, record.getSex()));
             adminUserVO.setStatusText(DictUtil.getValue(DictEnum.ADMIN_USER_STATUS, record.getStatus()));
+            adminUserVO.setAvatar(minioUtil.getFileUrl(record.getAvatar()));
             return adminUserVO;
         }));
     }

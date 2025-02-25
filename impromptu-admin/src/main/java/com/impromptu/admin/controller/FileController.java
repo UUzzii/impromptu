@@ -2,6 +2,7 @@ package com.impromptu.admin.controller;
 
 import com.common.result.ResultVO;
 import com.common.utils.MinioUtil;
+import com.common.vo.FileResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,12 +47,12 @@ public class FileController {
      */
     @PostMapping("/batch/upload")
     public ResultVO<?> batchUpload(@RequestParam("files") MultipartFile[] files) throws IOException {
-        List<String> fileNames = new ArrayList<>();
+        List<FileResponseVO> fileResponseVOList = new ArrayList<>();
         for (MultipartFile file : files) {
             // 上传文件
-            fileNames.add(minioUtil.uploadFile(file.getInputStream(), file.getOriginalFilename(), file.getContentType()));
+            fileResponseVOList.add(minioUtil.uploadFile(file.getInputStream(), file.getOriginalFilename(), file.getContentType()));
         }
-        return ResultVO.success(fileNames);
+        return ResultVO.success(fileResponseVOList);
     }
 
     /**

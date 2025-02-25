@@ -2,18 +2,16 @@ package com.common.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
+import com.common.vo.FileResponseVO;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
-import io.minio.Result;
 import io.minio.StatObjectArgs;
 import io.minio.http.Method;
-import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -21,10 +19,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -94,7 +88,7 @@ public class MinioUtil {
      * @param contentType   内容类型
      * @return 文件访问路径
      */
-    public String uploadFile(InputStream inputStream, String originalFilename, String contentType) {
+    public FileResponseVO uploadFile(InputStream inputStream, String originalFilename, String contentType) {
         return this.uploadFile(bucketName, inputStream, originalFilename, contentType);
     }
 
@@ -107,7 +101,7 @@ public class MinioUtil {
      * @param contentType   内容类型
      * @return 文件访问路径
      */
-    public String uploadFile(String bucketName, InputStream inputStream, String originalFilename, String contentType) {
+    public FileResponseVO uploadFile(String bucketName, InputStream inputStream, String originalFilename, String contentType) {
         try {
             // 生成文件名
             String fileName = this.generateFileName(originalFilename);
@@ -123,8 +117,7 @@ public class MinioUtil {
                             .contentType(contentType)
                             .stream(inputStream, size, -1)
                             .build());
-            
-            return "/" + bucketName + fileName;
+            return this.getFileResponseVO(bucketName, fileName);
         } catch (Exception e) {
             throw new RuntimeException("上传文件失败", e);
         }
@@ -147,6 +140,13 @@ public class MinioUtil {
                 DateUtil.date().toDateStr() + "/" +
                 UUID.randomUUID().toString().replaceAll("-", "") +
                 suffix;
+    }
+
+    private FileResponseVO getFileResponseVO(String bucketName, String fileName) {
+        FileResponseVO fileResponseVO = new FileResponseVO();
+        fileResponseVO.setFileName("/" + bucketName + fileName);
+        fileResponseVO.setFileUrl(getFileUrl(fileResponseVO.getFileName()));
+        return fileResponseVO;
     }
 
     /**
@@ -214,22 +214,11 @@ public class MinioUtil {
     /**
      * 获取文件外链（永久）
      *
-     * @param fileName 文件名
-     * @return 文件外链
-     */
-    public String getFileUrl(String fileName) {
-        return getFileUrl(bucketName, fileName);
-    }
-
-    /**
-     * 获取指定存储桶中文件的外链（永久）
-     *
-     * @param bucketName 存储桶名称
      * @param fileName   文件名
      * @return 文件外链
      */
-    public String getFileUrl(String bucketName, String fileName) {
-        return endpoint + "/" + bucketName + "/" + fileName;
+    public String getFileUrl(String fileName) {
+        return endpoint + fileName;
     }
 
     /**
@@ -257,44 +246,6 @@ public class MinioUtil {
         } catch (Exception e) {
             throw new RuntimeException("删除文件失败", e);
         }
-    }
-
-    /**
-     * 获取文件列表
-     *
-     * @return 文件信息列表
-     */
-    public List<Map<String, Object>> listFiles() {
-        return listFiles(bucketName);
-    }
-
-    /**
-     * 获取指定存储桶中的文件列表
-     *
-     * @param bucketName 存储桶名称
-     * @return 文件信息列表
-     */
-    public List<Map<String, Object>> listFiles(String bucketName) {
-        List<Map<String, Object>> fileList = new ArrayList<>();
-        try {
-            Iterable<Result<Item>> results = minioClient.listObjects(
-                    ListObjectsArgs.builder()
-                            .bucket(bucketName)
-                            .build());
-            
-            for (Result<Item> result : results) {
-                Item item = result.get();
-                Map<String, Object> fileInfo = new HashMap<>(4);
-                fileInfo.put("fileName", item.objectName());
-                fileInfo.put("size", item.size());
-                fileInfo.put("lastModified", item.lastModified());
-                fileInfo.put("url", getFileUrl(bucketName, item.objectName()));
-                fileList.add(fileInfo);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("获取文件列表失败", e);
-        }
-        return fileList;
     }
 
     /**
