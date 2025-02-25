@@ -65,6 +65,19 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>8.4.3</version>
+            </dependency>
+            <!-- 为了解决minio与okhttp的依赖冲突 -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>4.9.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
