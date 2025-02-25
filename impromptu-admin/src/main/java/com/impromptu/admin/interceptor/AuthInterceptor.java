@@ -2,11 +2,8 @@ package com.impromptu.admin.interceptor;
 
 import com.common.enums.ResultEnum;
 import com.common.exception.BusinessException;
-import com.impromptu.admin.entity.AdminUser;
 import com.impromptu.admin.utils.AuthUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,9 +17,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
 
     @Override
@@ -39,13 +33,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 校验token
-        AdminUser adminUser = (AdminUser) redisTemplate.opsForValue().get(AuthUtil.tokenKey(token));
-        if (adminUser == null) {
-            throw new BusinessException(ResultEnum.NO_LOGIN);
-        }
-
-        // 将用户信息存入ThreadLocal
-        AuthUtil.set(adminUser);
+        AuthUtil.check(token);
 
         return true;
     }

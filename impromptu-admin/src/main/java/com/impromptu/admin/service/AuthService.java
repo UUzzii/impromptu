@@ -1,9 +1,9 @@
 package com.impromptu.admin.service;
 
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.common.result.ResultVO;
+import com.common.utils.MinioUtil;
 import com.impromptu.admin.dto.LoginDTO;
 import com.impromptu.admin.entity.AdminUser;
 import com.impromptu.admin.utils.AuthUtil;
@@ -28,6 +28,9 @@ public class AuthService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private MinioUtil minioUtil;
+
 
     /**
      * 登录
@@ -49,13 +52,10 @@ public class AuthService {
         if (adminUser == null) {
             return ResultVO.error("账号或密码错误");
         }
+        // 设置头像
+        adminUser.setAvatar(minioUtil.getFileUrl(adminUser.getAvatar()));
 
-        // 生成token
-        String token = IdUtil.simpleUUID();
-        // 缓存token
-        redisTemplate.opsForValue().set(AuthUtil.tokenKey(token), adminUser);
-
-        return ResultVO.success(token);
+        return ResultVO.success(AuthUtil.login(adminUser));
     }
 
     /**
