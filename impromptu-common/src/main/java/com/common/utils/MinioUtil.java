@@ -2,7 +2,6 @@ package com.common.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
-import com.common.vo.FileResponseVO;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
@@ -88,7 +87,7 @@ public class MinioUtil {
      * @param contentType   内容类型
      * @return 文件访问路径
      */
-    public FileResponseVO uploadFile(InputStream inputStream, String originalFilename, String contentType) {
+    public String uploadFile(InputStream inputStream, String originalFilename, String contentType) {
         return this.uploadFile(bucketName, inputStream, originalFilename, contentType);
     }
 
@@ -101,7 +100,7 @@ public class MinioUtil {
      * @param contentType   内容类型
      * @return 文件访问路径
      */
-    public FileResponseVO uploadFile(String bucketName, InputStream inputStream, String originalFilename, String contentType) {
+    public String uploadFile(String bucketName, InputStream inputStream, String originalFilename, String contentType) {
         try {
             // 生成文件名
             String fileName = this.generateFileName(originalFilename);
@@ -117,7 +116,7 @@ public class MinioUtil {
                             .contentType(contentType)
                             .stream(inputStream, size, -1)
                             .build());
-            return this.getFileResponseVO(bucketName, fileName);
+            return "/" + bucketName + fileName;
         } catch (Exception e) {
             throw new RuntimeException("上传文件失败", e);
         }
@@ -140,13 +139,6 @@ public class MinioUtil {
                 DateUtil.date().toDateStr() + "/" +
                 UUID.randomUUID().toString().replaceAll("-", "") +
                 suffix;
-    }
-
-    private FileResponseVO getFileResponseVO(String bucketName, String fileName) {
-        FileResponseVO fileResponseVO = new FileResponseVO();
-        fileResponseVO.setFileName("/" + bucketName + fileName);
-        fileResponseVO.setFileUrl(getFileUrl(fileResponseVO.getFileName()));
-        return fileResponseVO;
     }
 
     /**

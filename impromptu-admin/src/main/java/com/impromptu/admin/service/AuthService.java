@@ -52,9 +52,6 @@ public class AuthService {
         if (adminUser == null) {
             return ResultVO.error("账号或密码错误");
         }
-        // 设置头像
-        adminUser.setAvatar(minioUtil.getFileUrl(adminUser.getAvatar()));
-
         return ResultVO.success(AuthUtil.login(adminUser));
     }
 

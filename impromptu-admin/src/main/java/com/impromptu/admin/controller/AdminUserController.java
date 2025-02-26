@@ -56,6 +56,16 @@ public class AdminUserController {
     }
 
     /**
+     * 获取用户详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/detail")
+    public ResultVO<?> detail(Integer id) {
+        return ResultVO.success(adminUserService.getById(id));
+    }
+
+    /**
      * 修改
      * @param dto
      * @return
@@ -75,4 +85,3 @@ public class AdminUserController {
         return adminUserService.delete(dto);
     }
 }
-
