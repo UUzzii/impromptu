@@ -61,7 +61,7 @@ public class AuthService {
      * @return
      */
     public ResultVO<?> logout(HttpServletRequest request) {
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         if (StringUtils.isNotBlank(token)) {
             redisTemplate.delete(AuthUtil.tokenKey(token));
         }
