@@ -17,5 +17,12 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     ResultVO<?> tree();
+
+    /**
+     * 新增
+     * @param menu
+     * @return
+     */
+    ResultVO<?> add(Menu menu);
 }
 

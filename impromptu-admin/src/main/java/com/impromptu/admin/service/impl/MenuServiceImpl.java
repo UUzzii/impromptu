@@ -39,5 +39,31 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
         }).collect(Collectors.toList());
         return ResultVO.success(TreeUtil.build(treeNodeList, 0));
     }
+
+    @Override
+    public ResultVO<?> add(Menu menu) {
+        // 如果没有父级,那么默认就是顶级
+        if (menu.getParentId() == null) {
+            menu.setParentId(0);
+        } else if (menu.getParentId() != 0) {
+            // 如果有父级,那么需要判断父级是否存在
+            Menu parent = baseMapper.selectById(menu.getParentId());
+            if (parent == null) {
+                return ResultVO.error("父级菜单不存在");
+            }
+        }
+
+        // 验证code唯一性
+        boolean exists = baseMapper.exists(Wrappers.lambdaQuery(Menu.class)
+                .eq(Menu::getCode, menu.getCode())
+                .ne(menu.getId() != null, Menu::getId, menu.getId()));
+        if (exists) {
+            return ResultVO.error("code已存在");
+        }
+
+        baseMapper.insert(menu);
+
+        return ResultVO.success();
+    }
 }
 
