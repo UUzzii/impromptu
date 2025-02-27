@@ -10,8 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>impromptu-common</module>
-        <module>impromptu-translate</module>
-        <module>impromptu-outdoor</module>
         <module>impromptu-admin</module>
     </modules>
 

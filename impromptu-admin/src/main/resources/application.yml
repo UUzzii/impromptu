@@ -15,13 +15,35 @@ spring:
     password: shipeng@98
     druid:
       # 初始连接数
-      initial-size: 5
-      # 最小连接池数量
-      min-idle: 5
-      # 最大连接池数量
+      initial-size: 2
+      # 最小空闲连接数
+      min-idle: 2
+      # 最大活动连接数
       max-active: 10
-      # 获取连接等待超时时间
+      # 获取连接的最大等待时间（毫秒）
       max-wait: 60000
+      # 检测空闲连接的间隔（毫秒，建议 60 秒）
+      time-between-eviction-runs-millis: 60000
+      # 空闲连接的最小存活时间（毫秒，建议 5 分钟）
+      min-evictable-idle-time-millis: 300000
+      # 验证连接是否有效的 SQL
+      validation-query: SELECT 1
+      # 验证查询的超时时间（秒）
+      validation-query-timeout: 1
+      # 空闲时测试连接有效性
+      test-while-idle: true
+      # 获取连接时测试（不推荐，影响性能）
+      test-on-borrow: false
+      # 归还连接时测试（不推荐，影响性能）
+      test-on-return: false
+      # 保持连接活跃（重要！防止断开）
+      keep-alive: true
+      # 保持活跃的间隔（毫秒，建议 2 分钟）
+      keep-alive-between-time-millis: 120000
+      # 连接池启动时是否移除废弃连接
+      remove-abandoned: true
+      # 废弃连接的超时时间（秒，建议 5 分钟）
+      remove-abandoned-timeout: 300
   # redis配置
   redis:
     host: 139.199.230.186
